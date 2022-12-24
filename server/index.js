@@ -20,6 +20,17 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
     console.log(`User connected: ${socket.id}`);
 
+    // lang nghe su kien tham gia vao phong
+    socket.on("join_room", (data) => {
+        socket.join(data);
+        console.log(`User with ID: ${socket.id} joined Room: ${data}`);
+    })
+
+    // lang nge su kien gui tin nhan
+    socket.on("send_message", (data) => {
+        socket.to(data.room).emit("receive_message", data);
+    })
+
     // lang nghe su kien khi ngat ket noi
     socket.on("disconnect", () => {
         console.log("User Disconnected", socket.id);
